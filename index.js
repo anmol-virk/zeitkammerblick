@@ -46,7 +46,7 @@ const generateToken = (user) => {
 };
 
 app.get("/", (req, res) => {
-    res.send(`<h1>Welcome to Pixaboo.</h1>`)
+    res.send(`<h1>Welcome to Zeitkammerblick.</h1>`)
 })
 
 app.get("/auth/google", (req, res) => {
