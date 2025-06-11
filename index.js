@@ -20,14 +20,8 @@ const PORT = process.env.PORT || 4001
 const { initializeDatabase } = require("./db/db.connect")
 const cookieParser = require("cookie-parser")
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  process.env.FRONTEND_URL, 
-  process.env.VERCEL_URL
-].filter(Boolean);
-
 app.use(express.json())
-app.use(cors({ credentials: true, origin: allowedOrigins }))
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 app.use(cookieParser());
 
 initializeDatabase()
@@ -56,9 +50,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/auth/google", (req, res) => {
-   const baseUrl = process.env.VERCEL_URL || `http://localhost:${PORT}`;
-    const redirectUri = `${baseUrl}/auth/google/callback`
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=profile email`;
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=http://localhost:${PORT}/auth/google/callback&response_type=code&scope=profile email`;
 
     res.redirect(googleAuthUrl)
 })
@@ -71,15 +63,12 @@ app.get("/auth/google/callback", async (req, res) => {
     }
 
     try {
-      const baseUrl = process.env.VERCEL_URL || `http://localhost:${PORT}`;
-      const redirectUri = `${baseUrl}/auth/google/callback`;
-
       const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
         code,
         grant_type: "authorization_code",
-        redirect_uri: redirectUri,
+        redirect_uri: `http://localhost:${PORT}/auth/google/callback`,
       },
       {
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
