@@ -51,7 +51,7 @@ const generateToken = (user) => {
 };
 
 app.get("/", (req, res) => {
-    res.send(`<h1>Welcome to Zeitkammerblick.</h1>`)
+    res.redirect(process.env.FRONTEND_URL)
 })
 
 app.get("/auth/google", (req, res) => {
