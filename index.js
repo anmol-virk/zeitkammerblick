@@ -24,7 +24,8 @@ app.use(express.json())
 app.use(cors({ 
   credentials: true, 
   origin: [ 
-    process.env.FRONTEND_URL
+    process.env.FRONTEND_URL,
+    `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   ]
 }))
 app.use(cookieParser());
