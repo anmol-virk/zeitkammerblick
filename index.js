@@ -24,8 +24,7 @@ app.use(express.json())
 app.use(cors({ 
   credentials: true, 
   origin: [ 
-    process.env.FRONTEND_URL,
-    `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    process.env.FRONTEND_URL
   ]
 }))
 app.use(cookieParser());
@@ -100,6 +99,8 @@ app.get("/auth/google/callback", async (req, res) => {
 
     res.cookie("token", jwtToken, {
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
    
