@@ -20,12 +20,12 @@ const PORT = process.env.PORT || 4001
 const { initializeDatabase } = require("./db/db.connect")
 const cookieParser = require("cookie-parser")
 
-app.use(express.json())
 app.use(cors({ 
-  origin: [ 
-    process.env.FRONTEND_URL
-  ]
-}))
+  origin: process.env.FRONTEND_URL,
+  credentials: true               
+}));
+
+app.use(express.json())
 app.use(cookieParser());
 
 initializeDatabase()
