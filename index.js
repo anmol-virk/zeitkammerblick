@@ -58,9 +58,6 @@ app.get("/auth/google", (req, res) => {
 
     res.redirect(googleAuthUrl)
 })
-app.get("/me", authMiddleware, (req, res) => {
-  res.status(200).json({ user: req.user });
-});
 
 app.get("/auth/google/callback", async (req, res) => {
     const { code } = req.query
@@ -99,14 +96,14 @@ app.get("/auth/google/callback", async (req, res) => {
 
     const jwtToken = generateToken(user);
 
-    res.cookie("token", jwtToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    // res.cookie("token", jwtToken, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "None",
+    //   maxAge: 7 * 24 * 60 * 60 * 1000
+    // });
    
-    return res.redirect(`${process.env.FRONTEND_URL}/albums`)
+    return res.redirect(`${process.env.FRONTEND_URL}/albums?token=${jwtToken}`)
     } catch(error) {
       console.error(error)
     }
