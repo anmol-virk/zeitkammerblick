@@ -58,6 +58,9 @@ app.get("/auth/google", (req, res) => {
 
     res.redirect(googleAuthUrl)
 })
+app.get("/me", authMiddleware, (req, res) => {
+  res.status(200).json({ user: req.user });
+});
 
 app.get("/auth/google/callback", async (req, res) => {
     const { code } = req.query
